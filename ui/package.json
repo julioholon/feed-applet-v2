@@ -1,5 +1,5 @@
 {
-  "name": "@neighbourhoods/provider-applet",
+  "name": "@neighbourhoods/feed-applet",
   "description": "Webcomponent lit-element following open-wc recommendations",
   "license": "MIT",
   "author": "lit-element",

@@ -2,19 +2,19 @@ import { contextProvided } from "@lit-labs/context";
 import { property } from "lit/decorators.js";
 import { ScopedElementsMixin } from "@open-wc/scoped-elements";
 import { LitElement, html } from "lit";
-import { providerStoreContext } from "../contexts";
-import { ProviderStore } from "../provider-store";
+import { feedStoreContext } from "../contexts";
+import { FeedStore } from "../feed-store";
 
-export class ProviderComponent extends ScopedElementsMixin(LitElement) {
-    @contextProvided({ context: providerStoreContext, subscribe: true })
+export class FeedComponent extends ScopedElementsMixin(LitElement) {
+    @contextProvided({ context: feedStoreContext, subscribe: true })
     @property({attribute: false})
-    public  providerStore!: ProviderStore
+    public  feedStore!: FeedStore
 
     
     render() {
         return html`
             <div>
-                <p1>this is a provider component!</p1>
+                <p1>this is a feed component!</p1>
             </div>
         `
     }

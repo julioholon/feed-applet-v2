@@ -7,15 +7,15 @@ import {
   encodeHashToBase64,
   ProvisionedCell,
 } from '@holochain/client';
-import { ProviderService } from './provider-service';
+import { FeedService } from './feed-service';
 
 // the ProviderStore manages the Writable svelte/store object, like accessing and updating it
-export class ProviderStore {
-  service: ProviderService;
+export class FeedStore {
+  service: FeedService;
 
   // this private field is meant to store the data from the provider dna in a structure that is helpful to the UI
   // you could create additional fields depending on what makes the most sense for your application data model
-  #providerData: Writable<{ [any: string]: Array<Record> }> = writable({});
+  #feedData: Writable<{ [any: string]: Array<Record> }> = writable({});
 
   get myAgentPubKey(): AgentPubKeyB64 {
     return encodeHashToBase64(this.providerCell.cell_id[1]);
@@ -24,17 +24,17 @@ export class ProviderStore {
   constructor(
     protected client: AppAgentWebsocket,
     protected providerCell: ProvisionedCell,
-    zomeName: string = 'provider'
+    zomeName: string = 'feed'
   ) {
-    this.service = new ProviderService(
+    this.service = new FeedService(
       client,
       providerCell.cell_id
     );
   }
 
   // you would create function for each zome call that you want to make
-  async allProviderResourceEntryHashes(): Promise<Array<EntryHash>> {
-    return this.service.allProviderResourceEntryHashes();
+  async allFeedResourceEntryHashes(): Promise<Array<EntryHash>> {
+    return this.service.allFeedResourceEntryHashes();
   }
 
   // this is an example of a function you would create to fetch all relevant data

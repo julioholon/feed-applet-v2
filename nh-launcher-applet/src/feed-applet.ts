@@ -3,13 +3,13 @@ import { ScopedElementsMixin } from "@open-wc/scoped-elements";
 import { CircularProgress } from "@scoped-elements/material-web";
 import { LitElement, html, css } from "lit";
 import { AppletInfo, SensemakerStore } from "@neighbourhoods/nh-launcher-applet";
-import { ProviderApp, ProviderStore } from "@neighbourhoods/provider-applet";
+import { FeedApp, FeedStore } from "@neighbourhoods/feed-applet";
 import appletConfig from './appletConfig';
 import { AppAgentWebsocket, AppWebsocket, CellType, ProvisionedCell } from "@holochain/client";
 
-const PROVIDER_ROLE_NAME = 'provider';
+const PROVIDER_ROLE_NAME = 'feed';
 
-export class ProviderApplet extends ScopedElementsMixin(LitElement) {
+export class FeedApplet extends ScopedElementsMixin(LitElement) {
   @property()
   appletAppInfo!: AppletInfo[];
 
@@ -20,7 +20,7 @@ export class ProviderApplet extends ScopedElementsMixin(LitElement) {
   sensemakerStore!: SensemakerStore;
 
   @property()
-  providerStore!: ProviderStore;
+  feedStore!: FeedStore;
 
   @state()
   loaded = false;
@@ -38,7 +38,7 @@ export class ProviderApplet extends ScopedElementsMixin(LitElement) {
 
       const appWs = await AppWebsocket.connect(this.appWebsocket.client.socket.url)
       const appAgentWebsocket: AppAgentWebsocket = await AppAgentWebsocket.connect(appWs.client.socket.url, "provider");
-      this.providerStore = new ProviderStore(
+      this.feedStore = new FeedStore(
         appAgentWebsocket,
         providerCell,
       );
@@ -64,14 +64,14 @@ export class ProviderApplet extends ScopedElementsMixin(LitElement) {
       </div>`;
 
     return html`
-      <provider-app .sensemakerStore=${this.sensemakerStore} .providerStore=${this.providerStore}></provider-app>
+      <feed-app .sensemakerStore=${this.sensemakerStore} .feedStore=${this.feedStore}></feed-app>
     `;
   }
 
   static get scopedElements() {
     return {
       "mwc-circular-progress": CircularProgress,
-      "provider-app": ProviderApp,
+      "feed-app": FeedApp,
     };
   }
 }

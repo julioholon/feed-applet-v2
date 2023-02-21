@@ -10,13 +10,13 @@ import {
   WeServices,
   AppletInfo,
 } from "@neighbourhoods/nh-launcher-applet";
-import { ProviderStore } from "@neighbourhoods/provider-applet";
-import { ProviderApplet } from "./provider-applet";
+import { FeedStore } from "@neighbourhoods/feed-applet";
+import { FeedApplet } from "./feed-applet";
 import { AppAgentWebsocket } from '@holochain/client';
 
-const PROVIDER_ROLE_NAME = 'provider'
+const PROVIDER_ROLE_NAME = 'feed'
 
-const providerApplet: NhLauncherApplet = {
+const feedApplet: NhLauncherApplet = {
   async appletRenderers(
     appWebsocket: AppWebsocket,
     adminWebsocket: AdminWebsocket,
@@ -25,9 +25,9 @@ const providerApplet: NhLauncherApplet = {
   ): Promise<AppletRenderers> {
     return {
       full(element: HTMLElement, registry: CustomElementRegistry) {
-        registry.define("provider-applet", ProviderApplet);
-        element.innerHTML = `<provider-applet></provider-applet>`;
-        const appletElement = element.querySelector("provider-applet") as any;
+        registry.define("feed-applet", FeedApplet);
+        element.innerHTML = `<feed-applet></feed-applet>`;
+        const appletElement = element.querySelector("feed-applet") as any;
         appletElement.appWebsocket = appWebsocket;
         appletElement.appletAppInfo = appletAppInfo;
         appletElement.sensemakerStore = weStore.sensemakerStore;
@@ -37,4 +37,4 @@ const providerApplet: NhLauncherApplet = {
   },
 };
 
-export default providerApplet;
+export default feedApplet;

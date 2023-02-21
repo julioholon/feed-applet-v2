@@ -15,17 +15,17 @@ import {
 import '@material/mwc-circular-progress';
 import { ScopedElementsMixin } from '@open-wc/scoped-elements';
 import { get } from 'svelte/store';
-import { ProviderStore } from './provider-store';
+import { FeedStore } from './feed-store';
 import { SensemakerService, SensemakerStore } from '@neighbourhoods/nh-launcher-applet';
-import { ProviderApp } from './index';
+import { FeedApp } from './index';
 import { CreateOrJoinNh } from './create-or-join-nh';
 import appletConfig from './appletConfig'
 
 const SENSEMAKER_ROLE_NAME = "sensemaker"
-const PROVIDER_ROLE_NAME = "provider"
+const PROVIDER_ROLE_NAME = "feed"
 
-@customElement('provider-app-test-harness')
-export class ProviderAppTestHarness extends ScopedElementsMixin(LitElement) {
+@customElement('feed-app-test-harness')
+export class FeedAppTestHarness extends ScopedElementsMixin(LitElement) {
   @state() loading = true;
   @state() actionHash: ActionHash | undefined;
   @state() currentSelectedList: string | undefined;
@@ -40,7 +40,7 @@ export class ProviderAppTestHarness extends ScopedElementsMixin(LitElement) {
   appInfo!: AppInfo;
 
   @property()
-  _providerStore!: ProviderStore;
+  _feedStore!: FeedStore;
 
   @property()
   _sensemakerStore!: SensemakerStore;
@@ -63,7 +63,7 @@ export class ProviderAppTestHarness extends ScopedElementsMixin(LitElement) {
       if (providerCellInfo) {
         const providerCell: ProvisionedCell = (providerCellInfo as { [CellType.Provisioned]: ProvisionedCell }).provisioned;
         this.agentPubkey = encodeHashToBase64(providerCell.cell_id[1]);
-        this._providerStore = new ProviderStore(await AppAgentWebsocket.connect(
+        this._feedStore = new FeedStore(await AppAgentWebsocket.connect(
           this.appWebsocket.client.socket.url,
           this.appInfo.installed_app_id,
         ), providerCell);
@@ -147,7 +147,7 @@ export class ProviderAppTestHarness extends ScopedElementsMixin(LitElement) {
       <main>
         <h3>My Pubkey: ${this.agentPubkey}</h3>
         <div class="home-page">
-          <provider-app .sensemakerStore=${this._sensemakerStore} .providerStore=${this._providerStore}></provider-app>
+          <feed-app .sensemakerStore=${this._sensemakerStore} .feedStore=${this._feedStore}></feed-app>
         </div>
       </main>
     `;
@@ -159,15 +159,15 @@ export class ProviderAppTestHarness extends ScopedElementsMixin(LitElement) {
     this.appWebsocket = await AppWebsocket.connect(``);
 
     this.appInfo = await this.appWebsocket.appInfo({
-      installed_app_id: 'provider-sensemaker',
+      installed_app_id: 'feed-sensemaker',
     });
   }
 
   async updateSensemakerState() {
     // you will need to implement the following methods in your provider dna, this is just an example of fetching sensemaker state
-    const allProviderResourceEntryHashes: EntryHash[] = await this._providerStore.allProviderResourceEntryHashes()
+    const allFeedResourceEntryHashes: EntryHash[] = await this._feedStore.allFeedResourceEntryHashes()
     const dimensionEh = get(this._sensemakerStore.appletConfig()).dimensions["importance"]
-    for (const taskEh of allProviderResourceEntryHashes) {
+    for (const taskEh of allFeedResourceEntryHashes) {
       await this._sensemakerStore.getAssessmentForResource({
         dimension_eh: dimensionEh,
         resource_eh: taskEh
@@ -177,7 +177,7 @@ export class ProviderAppTestHarness extends ScopedElementsMixin(LitElement) {
 
   static get scopedElements() {
     return {
-      'provider-app': ProviderApp,
+      'feed-app': FeedApp,
       'create-or-join-nh': CreateOrJoinNh,
     };
   }

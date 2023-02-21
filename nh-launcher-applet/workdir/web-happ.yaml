@@ -1,6 +1,6 @@
 ---
 manifest_version: "1"
-name: provider_applet-applet
+name: feed_applet-applet
 ui:
   bundled: "../ui.zip"
 happ_manifest:

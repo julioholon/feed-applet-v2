@@ -3,18 +3,18 @@ import { property } from 'lit/decorators.js';
 import { contextProvider } from '@lit-labs/context';
 import { ScopedElementsMixin } from '@open-wc/scoped-elements';
 
-import { providerStoreContext, sensemakerStoreContext } from './contexts';
-import { ProviderStore } from './provider-store';
+import { feedStoreContext, sensemakerStoreContext } from './contexts';
+import { FeedStore } from './feed-store';
 import { SensemakerStore } from '@neighbourhoods/nh-launcher-applet';
 import { ComputeContextInput } from '@neighbourhoods/sensemaker-lite-types';
-import { ProviderComponent } from './index'
+import { FeedComponent } from './index'
 import { get } from 'svelte/store';
 
-export class ProviderApp extends ScopedElementsMixin(LitElement) {
+export class FeedApp extends ScopedElementsMixin(LitElement) {
   // set up the context providers for both stores so that they can be accessed by other components
-  @contextProvider({ context: providerStoreContext })
+  @contextProvider({ context: feedStoreContext })
   @property()
-  providerStore!: ProviderStore;
+  feedStore!: FeedStore;
 
   @contextProvider({ context: sensemakerStoreContext })
   @property()
@@ -27,7 +27,7 @@ export class ProviderApp extends ScopedElementsMixin(LitElement) {
     return html`
       <main>
         <div class="home-page">
-          <provider-component></provider-component>
+          <feed-component></feed-component>
         </div>
       </main>
     `;
@@ -37,7 +37,7 @@ export class ProviderApp extends ScopedElementsMixin(LitElement) {
   // this is an example from the todo applet
   async computeContext(_e: CustomEvent) {
     const contextResultInput: ComputeContextInput = {
-      resource_ehs: await this.providerStore.allProviderResourceEntryHashes(),
+      resource_ehs: await this.feedStore.allFeedResourceEntryHashes(),
       context_eh: get(this.sensemakerStore.appletConfig()).cultural_contexts["most_important_tasks"],
       can_publish_result: false,
     }
@@ -46,7 +46,7 @@ export class ProviderApp extends ScopedElementsMixin(LitElement) {
 
   static get scopedElements() {
     return {
-      'provider-component': ProviderComponent,
+      'feed-component': FeedComponent,
     };
   }
 

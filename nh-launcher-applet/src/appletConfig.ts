@@ -53,7 +53,7 @@ const mostImportantTasksContext: ConfigCulturalContext = {
     "order_by": [[totalImportanceDimension, { "Biggest": null }]]
 }
 const appletConfig: AppletConfigInput = {
-    "name": "provider_applet",
+    "name": "feed_applet",
     "dimensions": [importanceDimension, totalImportanceDimension],
     "resource_types": [taskItemResourceType],
     "methods": [totalImportanceMethod],
