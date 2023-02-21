@@ -9,7 +9,7 @@ roles:
       strategy: create
       deferred: false
     dna:
-      bundled: "../dnas/provider/workdir/provider.dna"
+      bundled: "../dnas/feed/workdir/feed.dna"
       properties: ~
       uuid: ~
       version: ~

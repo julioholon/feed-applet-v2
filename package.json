@@ -16,7 +16,7 @@
     "package": "npm run build:happ && npm run build:ui && npm run package:ui -w nh-launcher-applet && hc web-app pack workdir",
     "build:happ": "npm run build:dnas && hc app pack ./workdir",
     "build:test-happ": "npm run build:dnas && hc app pack ./workdir/sensemaker-enabled",
-    "build:dnas": "npm run build:zomes && hc dna pack ./dnas/provider/workdir",
+    "build:dnas": "npm run build:zomes && hc dna pack ./dnas/feed/workdir",
     "build:zomes": "CARGO_TARGET_DIR=target cargo build --release --target wasm32-unknown-unknown",
     "build:ui": "npm run ts-build -w ui",
     "playground": "run-singleton \"holochain-playground\"",
@@ -27,6 +27,7 @@
   },
   "devDependencies": {
     "@holochain-playground/cli": "^0.0.11",
+    "@types/node": "^18.14.0",
     "concurrently": "^6.2.1",
     "concurrently-repeat": "^0.0.1",
     "cross-env": "^7.0.3",
