@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions */
 import { LitElement, css, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import {
@@ -15,8 +16,8 @@ import {
 import '@material/mwc-circular-progress';
 import { ScopedElementsMixin } from '@open-wc/scoped-elements';
 import { get } from 'svelte/store';
-import { FeedStore } from './feed-store';
 import { SensemakerService, SensemakerStore } from '@neighbourhoods/nh-launcher-applet';
+import { FeedStore } from './feed-store';
 import { FeedApp } from './index';
 import { CreateOrJoinNh } from './create-or-join-nh';
 import appletConfig from './appletConfig'
@@ -27,7 +28,9 @@ const PROVIDER_ROLE_NAME = "feed"
 @customElement('feed-app-test-harness')
 export class FeedAppTestHarness extends ScopedElementsMixin(LitElement) {
   @state() loading = true;
+
   @state() actionHash: ActionHash | undefined;
+
   @state() currentSelectedList: string | undefined;
 
   @property({ type: Object })
@@ -164,15 +167,16 @@ export class FeedAppTestHarness extends ScopedElementsMixin(LitElement) {
   }
 
   async updateSensemakerState() {
-    // you will need to implement the following methods in your provider dna, this is just an example of fetching sensemaker state
-    const allFeedResourceEntryHashes: EntryHash[] = await this._feedStore.allFeedResourceEntryHashes()
-    const dimensionEh = get(this._sensemakerStore.appletConfig()).dimensions["importance"]
-    for (const taskEh of allFeedResourceEntryHashes) {
-      await this._sensemakerStore.getAssessmentForResource({
-        dimension_eh: dimensionEh,
-        resource_eh: taskEh
-      })
-    }
+    // // you will need to implement the following methods in your provider dna, this is just an example of fetching sensemaker state
+    // const allFeedResourceEntryHashes: EntryHash[] = await this._feedStore.allFeedResourceEntryHashes()
+    // const dimensionEh = get(this._sensemakerStore.appletConfig()).dimensions["importance"]
+    // for (const taskEh of allFeedResourceEntryHashes) {
+    //   await this._sensemakerStore.getAssessmentForResource({
+    //     dimension_eh: dimensionEh,
+    //     resource_eh: taskEh
+    //   })
+    // }
+    return this;
   }
 
   static get scopedElements() {

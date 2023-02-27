@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions */
 import { Writable, writable } from 'svelte/store';
 import {
   AppAgentWebsocket,
@@ -24,7 +25,7 @@ export class FeedStore {
   constructor(
     protected client: AppAgentWebsocket,
     protected providerCell: ProvisionedCell,
-    zomeName: string = 'feed'
+    zomeName: string = 'posts'
   ) {
     this.service = new FeedService(
       client,
@@ -32,14 +33,27 @@ export class FeedStore {
     );
   }
 
-  // you would create function for each zome call that you want to make
-  async allFeedResourceEntryHashes(): Promise<Array<EntryHash>> {
-    return this.service.allFeedResourceEntryHashes();
+  async createPost(data: {}): Promise<Record> {
+    return this.service.createPost(data);
   }
 
-  // this is an example of a function you would create to fetch all relevant data
-  // from the provider dna to initialize the store on page refreshes
-  async fetchAllResources() {
-    return this.service.fetchAllResources();
+  async getPost(entryHash: EntryHash): Promise<Record | undefined> {
+    return this.service.getPost(entryHash);
+  }
+
+  async updatePost(data: {}): Promise<Record> {
+    return this.service.updatePost(data);
+  }
+
+  async deletePost(entryHash: EntryHash) {
+    this.service.deletePost(entryHash);
+  }
+
+  async fetchAllPosts() {
+    return this.service.fetchAllPosts();
+  }
+
+  allFeedResourceEntryHashes() {
+    return this.service.fetchAllPosts()
   }
 }

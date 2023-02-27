@@ -1,10 +1,10 @@
-import { Task, WrappedEntry, WrappedTaskWithAssessment } from "./types";
-import { encodeHashToBase64 } from '@holochain/client'
 import { Assessment } from "@neighbourhoods/sensemaker-lite-types";
+import { encodeHashToBase64 } from '@holochain/client'
+import { Post, WrappedEntry, WrappedPostWithAssessment } from "./types";
 
-function addMyAssessmentsToTasks(myPubKey: string, tasks: WrappedEntry<Task>[], assessments: Record<string, Array<Assessment>>): WrappedTaskWithAssessment[] {
-    const tasksWithMyAssessments = tasks.map(task => {
-      const assessmentsForTask = assessments[encodeHashToBase64(task.entry_hash)]
+function addMyAssessmentsToPosts(myPubKey: string, posts: WrappedEntry<Post>[], assessments: Record<string, Array<Assessment>>): WrappedPostWithAssessment[] {
+    const postsWithMyAssessments = posts.map(post => {
+      const assessmentsForTask = assessments[encodeHashToBase64(post.entry_hash)]
       let myAssessment
       if (assessmentsForTask) {
         myAssessment = assessmentsForTask.find(assessment => encodeHashToBase64(assessment.author) === myPubKey)
@@ -13,11 +13,11 @@ function addMyAssessmentsToTasks(myPubKey: string, tasks: WrappedEntry<Task>[], 
         myAssessment = undefined
       }
       return {
-        ...task,
+        ...post,
         assessments: myAssessment,
       }
     })
-    return tasksWithMyAssessments
+    return postsWithMyAssessments
   }
 
-  export { addMyAssessmentsToTasks }
+  export { addMyAssessmentsToPosts }

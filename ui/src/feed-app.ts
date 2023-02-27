@@ -1,22 +1,24 @@
+/* eslint-disable import/extensions */
 import { LitElement, css, html } from 'lit';
+import { get } from 'svelte/store';
 import { property } from 'lit/decorators.js';
-import { contextProvider } from '@lit-labs/context';
+import { consume } from '@lit-labs/context';
 import { ScopedElementsMixin } from '@open-wc/scoped-elements';
 
-import { feedStoreContext, sensemakerStoreContext } from './contexts';
-import { FeedStore } from './feed-store';
 import { SensemakerStore } from '@neighbourhoods/nh-launcher-applet';
 import { ComputeContextInput } from '@neighbourhoods/sensemaker-lite-types';
-import { FeedComponent } from './index'
-import { get } from 'svelte/store';
+import { feedStoreContext, sensemakerStoreContext } from './contexts';
+import { FeedStore } from './feed-store';
+import { AllPosts, CreatePost } from './index'
+
 
 export class FeedApp extends ScopedElementsMixin(LitElement) {
   // set up the context providers for both stores so that they can be accessed by other components
-  @contextProvider({ context: feedStoreContext })
+  @consume({ context: feedStoreContext })
   @property()
   feedStore!: FeedStore;
 
-  @contextProvider({ context: sensemakerStoreContext })
+  @consume({ context: sensemakerStoreContext })
   @property()
   sensemakerStore!: SensemakerStore;
 
@@ -27,26 +29,30 @@ export class FeedApp extends ScopedElementsMixin(LitElement) {
     return html`
       <main>
         <div class="home-page">
-          <feed-component></feed-component>
+        <h1>Feed</h1>
+
+        <div id="content"><all-posts></all-posts></div>
+        <create-post></create-post>
         </div>
       </main>
     `;
   }
 
-  // this is an example function of computing a context, since your UI will likely be displaying various contexts
-  // this is an example from the todo applet
-  async computeContext(_e: CustomEvent) {
-    const contextResultInput: ComputeContextInput = {
-      resource_ehs: await this.feedStore.allFeedResourceEntryHashes(),
-      context_eh: get(this.sensemakerStore.appletConfig()).cultural_contexts["most_important_tasks"],
-      can_publish_result: false,
-    }
-    const contextResult = await this.sensemakerStore.computeContext("most_important_tasks", contextResultInput)
-  }
+  // // this is an example function of computing a context, since your UI will likely be displaying various contexts
+  // // this is an example from the todo applet
+  // async computeContext(_e: CustomEvent) {
+  //   const contextResultInput: ComputeContextInput = {
+  //     resource_ehs: await this.feedStore.allFeedResourceEntryHashes(),
+  //     context_eh: get(this.sensemakerStore.appletConfig()).cultural_contexts["most_important_tasks"],
+  //     can_publish_result: false,
+  //   }
+  //   const contextResult = await this.sensemakerStore.computeContext("most_important_tasks", contextResultInput)
+  // }
 
   static get scopedElements() {
     return {
-      'feed-component': FeedComponent,
+      'all-posts': AllPosts,
+      'create-post': CreatePost
     };
   }
 

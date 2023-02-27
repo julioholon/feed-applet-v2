@@ -1,47 +1,58 @@
-import { ActionHash, EntryHash } from "@holochain/client"
-import { Assessment } from "@neighbourhoods/sensemaker-lite-types"
+import { 
+    Record, 
+    ActionHash, 
+    SignedActionHashed,
+    EntryHash, 
+    AgentPubKey,
+    Create,
+    Update,
+    Delete,
+    CreateLink,
+    DeleteLink,
 
-// NOTE: these are only example type definitions, you will need to define your own types to match the types defined in your zome code
-interface Task {
-    description: string,
-    status: TaskStatus,
-}
+  } from '@holochain/client';
+  import { Assessment } from "@neighbourhoods/sensemaker-lite-types"
+  
+  export type PostsSignal = {
+    type: 'EntryCreated';
+    action: SignedActionHashed<Create>;
+    app_entry: EntryTypes;
+  } | {
+    type: 'EntryUpdated';
+    action: SignedActionHashed<Update>;
+    app_entry: EntryTypes;
+    original_app_entry: EntryTypes;
+  } | {
+    type: 'EntryDeleted';
+    action: SignedActionHashed<Delete>;
+    original_app_entry: EntryTypes;
+  } | {
+    type: 'LinkCreated';
+    action: SignedActionHashed<CreateLink>;
+    link_type: string;
+  } | {
+    type: 'LinkDeleted';
+    action: SignedActionHashed<DeleteLink>;
+    link_type: string;
+  };
+  
+  export type EntryTypes =
+   | ({  type: 'Post'; } & Post);
+  
+  
+  export interface Post { 
+    text: string;
+  }
 
-
-type TaskStatus = TaskStatusComplete | TaskStatusIncomplete
-
-interface TaskStatusComplete {
-    Complete: null,
-}
-
-interface TaskStatusIncomplete {
-    Incomplete: null,
-}
-
-interface TaskToListInput {
-    task_description: string,
-    list: string,
-}
-
-interface WrappedEntry<T> {
+  export interface WrappedEntry<T> {
     action_hash: ActionHash,
     entry_hash: EntryHash,
     entry: T,
 }
-type WrappedTaskWithAssessment = WrappedEntry<Task> & {
+// defining a new type for including an assessment with the task
+export type WrappedPostWithAssessment = WrappedEntry<Post> & {
     assessments: Assessment | undefined,
 }
-
-export {
-    Task,
-    TaskStatus,
-    TaskStatusComplete,
-    TaskStatusIncomplete,
-    TaskToListInput,
-    WrappedEntry,
-    WrappedTaskWithAssessment,
-}
-
 export interface AppletConfig {
     dimensions: {
         [dimensionName: string]: EntryHash,
@@ -53,6 +64,8 @@ export interface AppletConfig {
         [contextName: string]: EntryHash,
     },
     contextResults: {
-        [contextName: string]: Array<WrappedTaskWithAssessment>,
+        [contextName: string]: Array<WrappedPostWithAssessment>,
     }
 }
+  
+  
