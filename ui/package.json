@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@holochain/client": "0.12.0",
-    "@lit-labs/context": "^0.2.0",
+    "@lit-labs/context": "^0.1.2",
     "@lit-labs/task": "^2.0.0",
     "@material/mwc-button": "^0.27.0",
     "@material/mwc-checkbox": "^0.27.0",

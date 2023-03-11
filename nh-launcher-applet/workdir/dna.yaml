@@ -1,15 +1,15 @@
 ---
 manifest_version: "1"
-name: feed_applet
+name: feed
 integrity:
 network_seed: 00000000-0000-0000-0000-000000000000
   properties: ~
   zomes:
-    - name: feed_applet_integrity
-      bundled: ../target/wasm32-unknown-unknown/release/feed_applet_integrity.wasm
+    - name: posts_integrity
+      bundled: ../target/wasm32-unknown-unknown/release/posts_integrity.wasm
 coordinator:
   zomes:
-    - name: feed_applet
-      bundled: ../target/wasm32-unknown-unknown/release/feed_applet.wasm
+    - name: posts
+      bundled: ../target/wasm32-unknown-unknown/release/posts.wasm
       dependencies:
         - name: feed_applet_integrity

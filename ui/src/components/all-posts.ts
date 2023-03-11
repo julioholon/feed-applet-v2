@@ -3,7 +3,7 @@ import { LitElement, html } from 'lit';
 import { ScopedElementsMixin } from "@open-wc/scoped-elements";
 import { state, customElement, property } from 'lit/decorators.js';
 import { AppAgentClient, AgentPubKey, EntryHash, ActionHash, Record, NewEntryAction } from '@holochain/client';
-import { consume } from '@lit-labs/context';
+import { consume, contextProvided } from '@lit-labs/context';
 import { Task } from '@lit-labs/task';
 import { feedStoreContext } from "../contexts";
 import { FeedStore } from "../feed-store";
@@ -16,13 +16,15 @@ import './post-detail';
 @customElement('all-posts')
 export class AllPosts extends ScopedElementsMixin(LitElement) {
 
-  @consume({ context: feedStoreContext, subscribe: true })
+  @contextProvided({ context: feedStoreContext, subscribe: true })
   public  feedStore!: FeedStore
   
   @state()
   signaledHashes: Array<ActionHash> = [];
   
-  _fetchPosts = new Task(this, ([]) => this.feedStore.fetchAllPosts() as Promise<Array<Record>>, () => []);
+  _fetchPosts = new Task(this, ([]) =>
+    this.feedStore.fetchAllPosts() as Promise<Array<Record>>
+    , () => []);
   
   firstUpdated() {
     // DISABLED FOR NOW
@@ -53,7 +55,7 @@ export class AllPosts extends ScopedElementsMixin(LitElement) {
         <mwc-circular-progress indeterminate></mwc-circular-progress>
       </div>`,
       complete: (records) => this.renderList([...this.signaledHashes, ...records.map(r => r.signed_action.hashed.hash)]),
-      error: (e: any) => html`<span>Error fetching the posts: ${e.data.data}.</span>`
+      error: (e: any) => html`<span>Error fetching the posts: ${e.data?.data}.</span>`
     });
   }
 }

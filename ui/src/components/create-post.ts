@@ -3,13 +3,12 @@ import { LitElement, html } from 'lit';
 import { state, customElement, property } from 'lit/decorators.js';
 import { ScopedElementsMixin } from "@open-wc/scoped-elements";
 import { InstalledCell, ActionHash, Record, AgentPubKey, EntryHash, AppAgentClient } from '@holochain/client';
-import { consume } from '@lit-labs/context';
-import '@material/mwc-button';
-import '@material/mwc-snackbar';
+import { consume, contextProvided } from '@lit-labs/context';
 import { Snackbar } from '@material/mwc-snackbar';
-import '@material/mwc-textarea';
 import { FeedStore } from "../feed-store";
 import { feedStoreContext } from "../contexts";
+import '@material/mwc-button';
+import '@material/mwc-textarea';
 import { Post } from '../types';
 
 @customElement('create-post')
@@ -43,7 +42,7 @@ export class CreatePost extends ScopedElementsMixin(LitElement) {
       }));
     } catch (e: any) {
       const errorSnackbar = this.shadowRoot?.getElementById('create-error') as Snackbar;
-      errorSnackbar.labelText = `Error creating the post: ${e.data.data}`;
+      errorSnackbar.labelText = `Error creating the post: ${e.data?.data}`;
       errorSnackbar.show();
     }
   }

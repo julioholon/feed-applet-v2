@@ -93,7 +93,7 @@ export class FeedAppTestHarness extends ScopedElementsMixin(LitElement) {
   }
 
   async initializeSensemakerStore(clonedSensemakerRoleName: string) {
-    const appAgentWebsocket: AppAgentWebsocket = await AppAgentWebsocket.connect(this.appWebsocket.client.socket.url, "todo-sensemaker");
+    const appAgentWebsocket: AppAgentWebsocket = await AppAgentWebsocket.connect(this.appWebsocket.client.socket.url, "feed-sensemaker");
     const sensemakerService = new SensemakerService(appAgentWebsocket, clonedSensemakerRoleName)
     this._sensemakerStore = new SensemakerStore(sensemakerService);
   }
@@ -106,7 +106,7 @@ export class FeedAppTestHarness extends ScopedElementsMixin(LitElement) {
         network_seed: '',
         properties: {
           sensemaker_config: {
-            neighbourhood: "todo test",
+            neighbourhood: "test",
             wizard_version: "v0.1",
             community_activator: ca_pubkey
           },
@@ -121,7 +121,7 @@ export class FeedAppTestHarness extends ScopedElementsMixin(LitElement) {
 
   async createNeighbourhood(_e: CustomEvent) {
     await this.cloneSensemakerCell(this.agentPubkey)
-    const _todoConfig = await this._sensemakerStore.registerApplet(appletConfig);
+    const _feedConfig = await this._sensemakerStore.registerApplet(appletConfig);
     await this.updateSensemakerState()
     this.loading = false;
   }
@@ -131,7 +131,7 @@ export class FeedAppTestHarness extends ScopedElementsMixin(LitElement) {
     console.log('successfully cloned sensemaker cell')
     // wait some time for the dht to sync, otherwise checkIfAppletConfigExists returns null
     setTimeout(async () => {
-      const _todoConfig = await this._sensemakerStore.checkIfAppletConfigExists("todo_applet")
+      const _feedConfig = await this._sensemakerStore.checkIfAppletConfigExists("feed_applet")
       await this.updateSensemakerState()
       this.loading = false;
     }, 2000)

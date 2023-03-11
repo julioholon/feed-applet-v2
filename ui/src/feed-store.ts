@@ -25,7 +25,6 @@ export class FeedStore {
   constructor(
     protected client: AppAgentWebsocket,
     protected providerCell: ProvisionedCell,
-    zomeName: string = 'posts'
   ) {
     this.service = new FeedService(
       client,
@@ -49,7 +48,7 @@ export class FeedStore {
     this.service.deletePost(entryHash);
   }
 
-  async fetchAllPosts() {
+  async fetchAllPosts(): Promise<Array<Record>> {
     return this.service.fetchAllPosts();
   }
 

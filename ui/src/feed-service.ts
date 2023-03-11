@@ -6,8 +6,8 @@ const PROVIDER_ZOME_NAME = 'posts'
 export class FeedService {
   constructor(public cellClient: AppAgentWebsocket, public cellId: CellId) {}
 
-  async fetchAllPosts(): Promise<{}> {
-    return this.callZome('fetch_all_posts', null);
+  async fetchAllPosts(): Promise<Array<Record>> {
+    return this.callZome('get_all_posts', null);
   }
 
   async createPost(data: {}): Promise<Record> {

@@ -2,23 +2,22 @@
 import { LitElement, css, html } from 'lit';
 import { get } from 'svelte/store';
 import { property } from 'lit/decorators.js';
-import { consume } from '@lit-labs/context';
+import { provide, contextProvider } from '@lit-labs/context';
 import { ScopedElementsMixin } from '@open-wc/scoped-elements';
 
 import { SensemakerStore } from '@neighbourhoods/nh-launcher-applet';
 import { ComputeContextInput } from '@neighbourhoods/sensemaker-lite-types';
+import { AllPosts, CreatePost } from './index'
 import { feedStoreContext, sensemakerStoreContext } from './contexts';
 import { FeedStore } from './feed-store';
-import { AllPosts, CreatePost } from './index'
-
 
 export class FeedApp extends ScopedElementsMixin(LitElement) {
   // set up the context providers for both stores so that they can be accessed by other components
-  @consume({ context: feedStoreContext })
+  @provide({ context: feedStoreContext })
   @property()
   feedStore!: FeedStore;
 
-  @consume({ context: sensemakerStoreContext })
+  @provide({ context: sensemakerStoreContext })
   @property()
   sensemakerStore!: SensemakerStore;
 
@@ -30,9 +29,10 @@ export class FeedApp extends ScopedElementsMixin(LitElement) {
       <main>
         <div class="home-page">
         <h1>Feed</h1>
-
-        <div id="content"><all-posts></all-posts></div>
-        <create-post></create-post>
+        <div id="content">
+          <all-posts></all-posts>
+          <create-post></create-post>
+        </div>
         </div>
       </main>
     `;
