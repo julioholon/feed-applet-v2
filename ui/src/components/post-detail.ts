@@ -7,15 +7,12 @@ import { consume } from '@lit-labs/context';
 import { Task } from '@lit-labs/task';
 import { decode } from '@msgpack/msgpack';
 import '@material/mwc-circular-progress';
-import '@material/mwc-icon-button';
-import '@material/mwc-icon-button-toggle';
-import '@material/mwc-snackbar';
-import { Snackbar } from '@material/mwc-snackbar';
+import { IconButton, Snackbar } from '@scoped-elements/material-web';
+import { IconButtonToggle } from '@material/mwc-icon-button-toggle';
 import { FeedStore } from "../feed-store";
 import { feedStoreContext } from "../contexts";
 
-
-import './edit-post';
+import { EditPost } from './edit-post';
 
 import { Post } from '../types';
 
@@ -59,6 +56,15 @@ export class PostDetail extends ScopedElementsMixin(LitElement) {
       const errorSnackbar = this.shadowRoot?.getElementById('errors') as Snackbar;
       errorSnackbar.labelText = `Error deleting the post: ${e.data.data}`;
       errorSnackbar.show();
+    }
+  }
+
+  static get scopedElements() {
+    return {
+        'mwc-icon-button': IconButton,
+        'mwc-icon-button-toggle': IconButtonToggle,
+        'mwc-snackbar': Snackbar,
+        'edit-post': EditPost,
     }
   }
 

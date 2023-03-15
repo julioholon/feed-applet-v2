@@ -4,10 +4,7 @@ import { ScopedElementsMixin } from "@open-wc/scoped-elements";
 import { ActionHash, EntryHash, AgentPubKey, Record, AppAgentClient } from '@holochain/client';
 import { consume } from '@lit-labs/context';
 import { decode } from '@msgpack/msgpack';
-import '@material/mwc-button';
-import '@material/mwc-snackbar';
-import { Snackbar } from '@material/mwc-snackbar';
-import '@material/mwc-textarea';
+import { TextArea, Button, Snackbar } from '@scoped-elements/material-web';
 import { FeedStore } from "../feed-store";
 import { feedStoreContext } from "../contexts";
 
@@ -73,6 +70,14 @@ export class EditPost extends ScopedElementsMixin(LitElement) {
     }
   }
 
+  static get scopedElements() {
+    return {
+        'mwc-textarea': TextArea,
+        'mwc-button': Button,
+        'mwc-snackbar': Snackbar,
+    }
+  }
+  
   render() {
     return html`
       <mwc-snackbar id="update-error" leading>

@@ -32,6 +32,7 @@
     "@material/mwc-snackbar": "^0.27.0",
     "@material/mwc-textarea": "^0.27.0",
     "@material/mwc-textfield": "^0.27.0",
+    "@scoped-elements/material-web": "^0.0.19",
     "@msgpack/msgpack": "^2.7.2",
     "@neighbourhoods/sensemaker-lite-types": "0.4.0",
     "@neighbourhoods/nh-launcher-applet": "0.0.10",

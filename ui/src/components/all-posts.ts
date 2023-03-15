@@ -3,7 +3,7 @@ import { LitElement, html } from 'lit';
 import { ScopedElementsMixin } from "@open-wc/scoped-elements";
 import { state, customElement, property } from 'lit/decorators.js';
 import { AppAgentClient, AgentPubKey, EntryHash, ActionHash, Record, NewEntryAction } from '@holochain/client';
-import { consume, contextProvided } from '@lit-labs/context';
+import { consume } from '@lit-labs/context';
 import { Task } from '@lit-labs/task';
 import { feedStoreContext } from "../contexts";
 import { FeedStore } from "../feed-store";
@@ -11,12 +11,12 @@ import '@material/mwc-circular-progress';
 
 import { PostsSignal } from '../types';
 
-import './post-detail';
+import { PostDetail } from './post-detail';
 
 @customElement('all-posts')
 export class AllPosts extends ScopedElementsMixin(LitElement) {
 
-  @contextProvided({ context: feedStoreContext, subscribe: true })
+  @consume({ context: feedStoreContext, subscribe: true })
   public  feedStore!: FeedStore
   
   @state()
@@ -36,7 +36,13 @@ export class AllPosts extends ScopedElementsMixin(LitElement) {
     //   this.signaledHashes = [payload.action.hashed.hash, ...this.signaledHashes];
     // });
   }
-  
+
+  static get scopedElements() {
+    return {
+        'post-detail': PostDetail,
+    }
+  }
+
   renderList(hashes: Array<ActionHash>) {
     if (hashes.length === 0) return html`<span>No posts found.</span>`;
     

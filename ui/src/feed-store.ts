@@ -1,5 +1,5 @@
 /* eslint-disable import/extensions */
-import { Writable, writable } from 'svelte/store';
+import { Writable, writable, get } from 'svelte/store';
 import {
   AppAgentWebsocket,
   EntryHash,
@@ -9,14 +9,13 @@ import {
   ProvisionedCell,
 } from '@holochain/client';
 import { FeedService } from './feed-service';
+import { WrappedEntry, Post } from './types';
 
 // the ProviderStore manages the Writable svelte/store object, like accessing and updating it
 export class FeedStore {
   service: FeedService;
 
-  // this private field is meant to store the data from the provider dna in a structure that is helpful to the UI
-  // you could create additional fields depending on what makes the most sense for your application data model
-  #feedData: Writable<{ [any: string]: Array<Record> }> = writable({});
+  #postData: Writable<Array<Record>> = writable([]);
 
   get myAgentPubKey(): AgentPubKeyB64 {
     return encodeHashToBase64(this.providerCell.cell_id[1]);
@@ -48,8 +47,12 @@ export class FeedStore {
     this.service.deletePost(entryHash);
   }
 
-  async fetchAllPosts(): Promise<Array<Record>> {
-    return this.service.fetchAllPosts();
+  async fetchAllPosts(): Promise<Array<Record> {
+    const fetchedPosts = await this.service.fetchAllPosts();
+    this.#postData.update(x => {
+      return fetchedPosts;
+    });
+    return get(this.#postData);
   }
 
   allFeedResourceEntryHashes() {
